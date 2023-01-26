@@ -1,8 +1,16 @@
 # NewCatalog
 Analogue of e-katalog for Russia with additional features.
+
 Аналог e-katalog ждя России с допольнительными фичами
+
+# Design
+
+https://www.figma.com/file/ik1wdwDS8ztPV5PDgJHSfd/newCatalog?node-id=0%3A1&t=xkhCAUcCIYev1bTW-1
+
 # Stack
+
 FastAPI, PostgreSQL
+
 # Roadmap//Дорожная карта
 
 0.1. Make a working website with clickable pseudo-products and transitions to a new page.

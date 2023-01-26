@@ -14,3 +14,7 @@ HDD - https://uxwing.com/hdd-icon/
 Power Unit - https://uxwing.com/power-supply-unit-smps-icon/
 
 CPU Fan - https://uxwing.com/cpu-fan-cooling-icon/
+
+ShoppingCart - взята из примера, выданным Полянцевой К.А. на летнюю практику в институте
+
+Profile - аналогично SpoppingCart
