@@ -25,7 +25,9 @@ async def root(request: Request) -> Any:
 
 @app.get('/cpu/')
 async def cpus(request: Request):
-    return {'request':'cpu'}
+    generate_page.generate_category_page('cpu')
+    context = {'request':request}
+    return templates.TemplateResponse("cpu.html", context)
 
 @app.get('/gpu/')
 async def cpus(request: Request):
