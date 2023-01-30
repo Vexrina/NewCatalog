@@ -1,7 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 import os
 
-
 def generate_homepage() -> None:
     header_items = []
 
