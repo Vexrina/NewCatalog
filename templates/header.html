@@ -7,12 +7,14 @@
                 </a>
             </div>
             <nav class="header__nav">
-                <ul class="header__item">
+                <ul class="header__list">
                     {% for header_item in header_items %}
-                    <a href="/{{ header_item['alt'] }}/">
-                        <img src="{{ header_item['src'] }}" alt="{{ header_item['alt'] }}"
-                            class="{{ header_item['class'] }}">
-                    </a>
+                    <li class="header__item">
+                        <a href="/{{ header_item['alt'] }}/">
+                            <img src="{{ header_item['src'] }}" alt="{{ header_item['alt'] }}"
+                                class="{{ header_item['class'] }}">
+                        </a>
+                    </li>
                     {% endfor %}
                 </ul>
             </nav>

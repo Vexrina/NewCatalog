@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,37 @@
     <title>newCatalog</title>
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
+
 <body>
-    
+    {% include "header.html" %}
+    <main class="main">
+        <div class="wrapper">
+            <section id="grid">
+                <div class="container">
+                    <aside class="items_grid">
+                        <h1 class="category__title">
+                            {{Category}}
+                        </h1>
+                        {% for item in items %}
+                        <ul class="category__position">
+                            <li class="cat__pos">
+                                <div class="container">
+                                    <aside class="pos_grid">
+                                        {%for subitem in item %}
+                                        <aside class="subitem">
+                                            {{subitem}} - {{item[subitem]}}
+                                        </aside>
+                                        {% endfor %}
+                                    </aside>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endfor %}
+                    </aside>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
+
 </html>
