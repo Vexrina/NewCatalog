@@ -1,0 +1,21 @@
+<header class="header">
+    <div class="wrapper">
+        <div class="header__wrapper">
+            <div class="header__logo">
+                <a href="/" class="header__logo-link">
+                    <img src="../static/img/svg/red_splash.svg" alt="newCatalog" class="header__logo-pic">
+                </a>
+            </div>
+            <nav class="header__nav">
+                <ul class="header__item">
+                    {% for header_item in header_items %}
+                    <a href="/{{ header_item['alt'] }}/">
+                        <img src="{{ header_item['src'] }}" alt="{{ header_item['alt'] }}"
+                            class="{{ header_item['class'] }}">
+                    </a>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
