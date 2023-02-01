@@ -5,13 +5,6 @@ import pandas as pd
 from openpyxl import load_workbook
 
 
-def get_content(link):
-    response = requests.get(link)
-    print(response.status_code)
-    soup = bs(response.content, 'html5lib')
-    return soup.get_text()
-
-
 def get_data(link) -> dict:
     # Get content from citilink
     response = requests.get(link)
