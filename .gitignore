@@ -1,4 +1,5 @@
 test*.*py*
+.google-cookie
 /pages/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
