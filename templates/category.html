@@ -21,17 +21,11 @@
                         </h1>
                         {% for item in items %}
                         <ul class="category__position">
+                            {%for subitem in item %}
                             <li class="cat__pos">
-                                <div class="container">
-                                    <aside class="pos_grid">
-                                        {%for subitem in item %}
-                                        <aside class="subitem">
-                                            {{subitem}} - {{item[subitem]}}
-                                        </aside>
-                                        {% endfor %}
-                                    </aside>
-                                </div>
+                                {{subitem}} - {{item[subitem]}}
                             </li>
+                            {% endfor %}
                         </ul>
                         {% endfor %}
                     </aside>
