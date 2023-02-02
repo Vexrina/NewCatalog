@@ -1,4 +1,6 @@
 from googlesearch import search
+from selenium import webdriver
+from selenium.webdriver.common.by import By 
 
 
 def get_links(query:str)->list[str]:
@@ -29,3 +31,18 @@ def get_links(query:str)->list[str]:
     return result
 
 query = 'ryzen 5 3600 oem site:'
+
+
+import time
+
+def get_dns_price(link:str):
+    driver = webdriver.Chrome(r'\usr\bin\google-chrome')
+    driver.get(link)
+    # time.sleep(5)
+    div = driver.find_element(By.CLASS_NAME,'product-buy__price')
+    price = div.get_attribute('outerHTML')
+    driver.close()
+    price = price[price.find('>')+1:]
+    price = price[:price.find('<')-1].replace(' ','')
+    return price
+    

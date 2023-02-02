@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 import os
-
+from parserCPU import get_data
 
 def take_header_items() -> list[dict]:
     header_items = []
@@ -39,23 +39,32 @@ def generate_category_page(category: str) -> None:
     fileLoader = FileSystemLoader('templates')
     env = Environment(loader=fileLoader)
 
-    first_cpu = {
-        'Брэнд': 'AMD', 'Модель': '5800X',
-        'Гнездо процессора': 'SocketAM4', 'Количество ядер': '8',
-        'Количество потоков': '16', 'Частота': '3.8 ГГц и 4.7 ГГц в режиме Turbo',
-        'L3 кэш': '32 МБ', 'Технологический процесс': '7 нм',
-        'Множитель': 'разблокированный', 'Тепловыделение': '105 Вт',
-        'Максимальная температура': '90 °С', 'Тип памяти': 'DDR4',
-        'Поддержка частот памяти': '3200 МГц', 'Количество каналов памяти': '2',
-        'Встроенное графическое ядро': 'отсутствует'}
+    links = [
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5800x-am4-100-000000063-3-8ghz-oem-1773839/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-3700x-am4-100-000000071-3-6ghz-oem-1804883/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-5600g-am4-100-000000252-3-9ghz-amd-radeon-oem-1773831/properties/',
+    'https://www.citilink.ru/product/processor-intel-s-pentium-gold-g6405-soc-1200-4-1ghz-iuhdg610-oem-1722989/properties/',
+    'https://www.citilink.ru/product/processor-intel-s-core-i5-11400f-soc-1200-2-6ghz-oem-1722999/properties/',
+    'https://www.citilink.ru/product/processor-intel-s-core-i5-12400f-soc-1700-2-5ghz-oem-1782240/properties/'
+    ]
+
+    data = []
+    for link in links:
+        data.append(get_data(link))
+    
+    for item in data:
+        if len(item)==0:
+            data.remove(item)
+
     rendered = env.get_template('category.html').render(
         header_items=header_items,
         Category=category,
-        items=[first_cpu]
+        items=data
     )
 
     with open(f'./pages/{category.lower()}.html', 'w',  encoding='UTF-8') as f:
         f.write(rendered)
+    print('Html is rendered')
 
 
 generate_category_page('CPU')
