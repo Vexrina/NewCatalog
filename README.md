@@ -17,7 +17,7 @@ FastAPI, Sqlite, Selenium, BeautifulSoup4, Jinja2
 
 0.2. Collect product data (CPU, GPU, RAM, etc.) from official sites ~~~(AMD, NVIDIA, INTEL, etc.)~~~
 
-0.3. Make price data collection in the largest retailers - DNS, Citilink, Online-Trade, OZON (average price WITHOUT / WITH delivery from abroad)
+0.3. ~~~Make price data collection in the largest retailers - DNS, Citilink, Online-Trade, Regard ~~~
 
 0.4. Make an average performance data collection in synthetics
 
@@ -29,7 +29,7 @@ ___
 
 0.2 Сделать сбор данных о товарах (CPU, GPU, RAM, др.) с оффициальных сайтов ~~~(AMD, NVIDIA, INTEL, др.)~~~ 
 
-0.3 Сделать сбор данных о ценах в крупнейших ретейлерах - DNS, Citilink, Online-Trade, OZON (средняя цена БЕЗ/С доставкой из-за рубежа)
+0.3 ~~~Сделать сбор данных о ценах в крупнейших ретейлерах - DNS, Citilink, Online-Trade, Regard~~~
 
 0.4 Сделать сбор данных о средней производительности в синтетике
 
