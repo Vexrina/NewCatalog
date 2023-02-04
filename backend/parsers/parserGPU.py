@@ -5,7 +5,7 @@ import pandas as pd
 from openpyxl import load_workbook
 
 
-def get_data(link) -> dict:
+def get_data(link:str) -> dict:
     # Get content from citilink
     response = requests.get(link)
     print(response.status_code)
@@ -38,7 +38,6 @@ def get_data(link) -> dict:
         'Использование в системе охлаждения видеокарты тепловых трубок (heatpipe), которые улучшают охлаждение графического процессора и видеопамяти.',
         'Размеры',
         'Данная характеристика указывает на заводской "разгон" (увеличение частот графического процессора и видеопамяти), который увеличивает производительность видеокарты, по сравнению с референсными видеокартами конкретной модели.'
-
     ]
     for title in titles:
         if title in data:
