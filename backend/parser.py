@@ -77,7 +77,11 @@ def del_keys(useless_keys: list[str], preresult: dict) -> dict:
 
 
 def fan(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
     preresult = del_title(utlk.fan_titles, full_spec)
     pattern = 'Совместимость\s[a-zA-z]{3,}\s?\d+\+?'
     """
@@ -99,37 +103,69 @@ def fan(link: str) -> dict:
 
 
 def cpu(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
     preresult = del_title(utlk.cpu_titles, full_spec)
     return del_keys(utlk.cpu_keys, preresult)
 
 
 def gpu(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
     preresult = del_title(utlk.gpu_titles, full_spec)
     return del_keys(utlk.gpu_keys, preresult)
 
 
 def storage(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
+    indexes = [i for i, j in enumerate(full_spec) if j == 'Особенности']
+    if len(indexes) > 1:
+        full_spec.pop(indexes[-1])
+        full_spec.pop(indexes[-1])
     preresult = del_title(utlk.storage_titles, full_spec)
     return del_keys(utlk.storage_keys, preresult)
 
 
 def ram(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
+    if 'Конфигурация чипов' in full_spec:
+        full_spec.remove('Конфигурация чипов')
     preresult = del_title(utlk.ram_titles, full_spec)
     return del_keys(utlk.ram_keys, preresult)
 
 
 def motherboard(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
+    if 'Чипсет' in full_spec:
+        full_spec.remove('Чипсет')
     preresult = del_title(utlk.motherboard_titles, full_spec)
     return del_keys(utlk.motherboard_keys, preresult)
 
 
 def power_unit(link: str) -> dict:
-    full_spec = get_data(link)
+    full_spec = []
+    step = 0
+    while len(full_spec) == 0 and step != 10:
+        full_spec = get_data(link)
+        step += 1
     preresult = del_title(utlk.pu_titles, full_spec)
     return del_keys(utlk.pu_keys, preresult)
 
@@ -140,60 +176,40 @@ def parsing(links: list[dict], what_parse: str):
     match what_parse:
         case 'fan':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = fan(link)
-                    step += 1
-                data.append(temp)
+                temp = fan(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'cpu':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = cpu(link)
-                    step += 1
-                data.append(temp)
+                temp = cpu(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'gpu':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = gpu(link)
-                    step += 1
-                data.append(temp)
+                temp = gpu(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'storage':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = storage(link)
-                    step += 1
-                data.append(temp)
+                temp = storage(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'ram':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = ram(link)
-                    step += 1
-                data.append(temp)
+                temp = ram(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'motherboard':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = motherboard(link)
-                    step += 1
-                data.append(temp)
+                temp = motherboard(link)
+                if len(temp) != 0:
+                    data.append(temp)
         case 'power_unit':
             for link in links:
-                temp = {}
-                step = 0
-                while len(temp) == 0 and step != 10:
-                    temp = power_unit(link)
-                    step += 1
-                data.append(temp)
+                temp = power_unit(link)
+                if len(temp) != 0:
+                    data.append(temp)
+
     df = pd.DataFrame.from_dict(data)
     try:
         book = load_workbook(r'backend/database.xlsx')
