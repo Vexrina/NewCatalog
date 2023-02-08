@@ -5,9 +5,9 @@ from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import logging
-import time
 import re
 import pandas as pd
+import httpx
 from openpyxl import load_workbook
 import useless_title_and_keys as utlk
 
@@ -171,6 +171,9 @@ def power_unit(link: str) -> dict:
 
 
 def parsing(links: list[dict], what_parse: str):
+    response = httpx.get('https://www.citilink.ru/')
+    if response.status_code != 200:
+        raise ValueError
     data = []
     match what_parse:
         case 'fan':
@@ -277,5 +280,8 @@ test['power_unit'] = [
     'https://www.citilink.ru/product/blok-pitaniya-aerocool-aero-white-500vt-120mm-chernyi-retail-aero-whit-1207077/properties/',
 ]
 
-for key, links in test.items():
-    parsing(links, key)
+# for key, links in test.items():
+#     parsing(links, key)
+
+# response = httpx.get('https://www.citilink.ru/product/blok-pitaniya-aerocool-aero-white-500vt-120mm-chernyi-retail-aero-whit-1207077/properties/')
+# print(response.status_code)
