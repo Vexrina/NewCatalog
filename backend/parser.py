@@ -9,6 +9,7 @@ import time
 import re
 import pandas as pd
 from openpyxl import load_workbook
+import useless_title_and_keys as utlk
 
 # some options for webdriver
 chrome_options = Options()
@@ -46,13 +47,19 @@ def get_data(link: str) -> list[str]:
         else:
             k += 1
 
+    full_spec = list(filter(None, full_spec))
     return full_spec
 
 
-def del_title(titles: list[str], full_spec: list[str]) -> dict:
-    for title in titles:
-        if title in full_spec:
-            full_spec.remove(title)
+def del_title(titles: list[str], full_spec: list[str]):
+    k = 0
+    while k != len(full_spec):
+        if full_spec[k] in utlk.notuniq_titles:
+            full_spec.pop(k)
+        elif full_spec[k] in titles:
+            full_spec.pop(k)
+        else:
+            k += 1
     result = {}
     for i in range(1, len(full_spec), 2):
         result[full_spec[i-1]] = full_spec[i]
@@ -60,6 +67,9 @@ def del_title(titles: list[str], full_spec: list[str]) -> dict:
 
 
 def del_keys(useless_keys: list[str], preresult: dict) -> dict:
+    for key in utlk.notuniq_keys:
+        if key in preresult:
+            preresult.pop(key)
     for key in useless_keys:
         if key in preresult:
             preresult.pop(key)
@@ -68,27 +78,7 @@ def del_keys(useless_keys: list[str], preresult: dict) -> dict:
 
 def fan(link: str) -> dict:
     full_spec = get_data(link)
-
-    titles = [
-        'Дополнительные характеристики',
-        'Упаковка', 'Размеры, вес',
-        'Электропитание', 'Конструкция',
-        'Совместимость', 'Основные параметры',
-        'Особенности',
-    ]
-    preresult = del_title(titles, full_spec)
-
-    useless_key = [
-        'Направление выдува', 'Воздушный поток',
-        'Тип подшипника', '-', 'Вес',
-        'Вес упаковки (ед)', 'Гарантия',
-        'Длина кулера', 'Ширина кулера', 'Толщина вентилятора',
-        'Воздушный поток вентилятора',
-        'Особенности', 'Назначение кулера для бренда',
-        'Разборное крепление', 'Термопаста в комплекте',
-        'Габариты упаковки (ед) ДхШхВ',
-
-    ]
+    preresult = del_title(utlk.fan_titles, full_spec)
     pattern = 'Совместимость\s[a-zA-z]{3,}\s?\d+\+?'
     """
     У ситилинка, в разделе спецификаций на охлаждение,
@@ -101,7 +91,7 @@ def fan(link: str) -> dict:
     возможен пробел, после идут 1 или больше цифр --- \s?\d+
     возможен плюс на конце --- \+?
     """
-    preresult = del_keys(useless_key, preresult)
+    preresult = del_keys(utlk.fan_keys, preresult)
 
     result = {k: preresult[k] for k in preresult if not re.match(pattern, k)}
 
@@ -109,153 +99,109 @@ def fan(link: str) -> dict:
 
 
 def cpu(link: str) -> dict:
-    titles = [
-        'Основные характеристики',
-        'Спецификация памяти',
-        'Спецификация PCI Express',
-        'Встроенная графика',
-        'Дополнительные характеристики',
-        'Упаковка',
-    ]
-    useless_keys = [
-        'Ядро', 'Разрядность вычислений', 'Тип поставки',
-        'Поддержка памяти ECC', 'Версия PCI Express',
-        'Количество каналов PCI Express', 'Пропускная способность шины (GT/s)',
-        'Конфигурация PCI Express', 'Пропускная способность памяти',
-        'Максимальный объем видеопамяти', 'Максимальный объем памяти',
-        'Тепловыделение в режиме Turbo'
-    ]
-
     full_spec = get_data(link)
-    preresult = del_title(titles, full_spec)
-    return del_keys(useless_keys, preresult)
+    preresult = del_title(utlk.cpu_titles, full_spec)
+    return del_keys(utlk.cpu_keys, preresult)
 
 
 def gpu(link: str) -> dict:
-    with open('backend/gpu_useless_lines.txt',encoding='utf-8') as f:
-        titles = f.readlines()
-    for i in range(len(titles)):
-        titles[i] = titles[i][:-1]
-    # print(titles)
-    useless_keys = [
-        'Интерфейс', 'Разрядность шины видеопамяти',
-        'Поддержка технологий NVIDIA', 'Тип поставки',
-        'Ширина видеокарты', 'Версия разъема HDMI',
-        'Версия разъема Display Port',
-        'Использование тепловых трубок',
-        'OverClock Edition', "Толщина видеокарты",
-        'Вес упаковки (ед)', 'Габариты упаковки (ед) ДхШхВ',
-        'Гарантия', 'Высота видеокарты',
-    ]
-
     full_spec = get_data(link)
-    full_spec = list(filter(None, full_spec))
-    preresult = del_title(titles, full_spec)
-    # return preresult
-    return del_keys(useless_keys, preresult)
+    preresult = del_title(utlk.gpu_titles, full_spec)
+    return del_keys(utlk.gpu_keys, preresult)
 
 
 def storage(link: str) -> dict:
-    titles = [
-        'Основные характеристики',
-        'Скорость',
-        'Ресурс',
-        'Особенности',
-        'Габариты, вес'
-    ]
-    useless_keys = [
-        'Уровень шума простоя',
-        'Длина устройства',
-        'Толщина',
-        'Вес устройства',
-        'Ударостойкость при работе',
-        'Ударостойкость при хранении'
-    ]
     full_spec = get_data(link)
-    preresult = del_title(titles, full_spec)
-    return del_keys(useless_keys, preresult)
+    preresult = del_title(utlk.storage_titles, full_spec)
+    return del_keys(utlk.storage_keys, preresult)
 
 
 def ram(link: str) -> dict:
-    titles = [
-        'Основные характеристики',
-        'Тестовые характеристики',
-        'Характеристики SPD',
-        'Конструкция', 'Конфигурация чипов',
-        'Error Checking and Correction',
-        'Скорость памяти в тестовом режиме.',
-        'Автоматические настройки модуля памяти.',
-        'Задержка памяти в тестовом режиме.',
-        'Скорость памяти в тестовом режиме.',
-        'Напряжение памяти в тестовом режиме.',
-        'Упаковка','Дополнительные характеристики',
-        ''
-    ]
-    useless_keys = [
-        'Показатель скорости', 'Буферизация',
-        'Поддержка ECC', 'Скорость (SPD)',
-        'Напряжение (SPD)', 'Задержка (SPD)',
-        'Радиатор охлаждения', 'Тип поставки',
-        'Количество чипов', 'Конфигурация чипов',
-        'Крепление чипов', 'Вес упаковки',
-        'Гарантия', 'Вес упаковки (ед)',
-    ]
     full_spec = get_data(link)
-    preresult = del_title(titles, full_spec)
-    return del_keys(useless_keys, preresult)
+    preresult = del_title(utlk.ram_titles, full_spec)
+    return del_keys(utlk.ram_keys, preresult)
+
+
+def motherboard(link: str) -> dict:
+    full_spec = get_data(link)
+    preresult = del_title(utlk.motherboard_titles, full_spec)
+    return del_keys(utlk.motherboard_keys, preresult)
+
+
+def power_unit(link: str) -> dict:
+    full_spec = get_data(link)
+    preresult = del_title(utlk.pu_titles, full_spec)
+    return del_keys(utlk.pu_keys, preresult)
 
 
 def parsing(links: list[dict], what_parse: str):
     data = []
-    k = 0
+    # bad_links = []
     match what_parse:
         case 'fan':
             for link in links:
-                temp = fan(link)
-                if len(temp) == 0:
-                    print(f'Bad link{k}, try again')
-                else:
-                    data.append(temp)
-                k += 1
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = fan(link)
+                    step += 1
+                data.append(temp)
         case 'cpu':
             for link in links:
-                temp = cpu(link)
-                if len(temp) == 0:
-                    print(f'Bad link{k}, try again')
-                else:
-                    data.append(temp)
-                k += 1
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = cpu(link)
+                    step += 1
+                data.append(temp)
         case 'gpu':
             for link in links:
-                temp = gpu(link)
-                if len(temp) == 0:
-                    print(f'Bad link{k}, try again')
-                else:
-                    data.append(temp)
-                k += 1
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = gpu(link)
+                    step += 1
+                data.append(temp)
         case 'storage':
             for link in links:
-                temp = storage(link)
-                if len(temp) == 0:
-                    print(f'Bad link{k}, try again')
-                else:
-                    data.append(temp)
-                k += 1
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = storage(link)
+                    step += 1
+                data.append(temp)
         case 'ram':
             for link in links:
-                temp = ram(link)
-                if len(temp) == 0:
-                    print(f'Bad link{k}, try again')
-                else:
-                    data.append(temp)
-                k += 1
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = ram(link)
+                    step += 1
+                data.append(temp)
+        case 'motherboard':
+            for link in links:
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = motherboard(link)
+                    step += 1
+                data.append(temp)
+        case 'power_unit':
+            for link in links:
+                temp = {}
+                step = 0
+                while len(temp) == 0 and step != 10:
+                    temp = power_unit(link)
+                    step += 1
+                data.append(temp)
     df = pd.DataFrame.from_dict(data)
     try:
         book = load_workbook(r'backend/database.xlsx')
         writer = pd.ExcelWriter(r'backend/database.xlsx', engine='openpyxl')
         writer.book = book
 
-        df.to_excel(writer, sheet_name=what_parse + 's', index=False, header=True)
+        df.to_excel(writer, sheet_name=what_parse +
+                    's', index=False, header=True)
         writer.save()
     except PermissionError:
         print('Excelbook is opened. Please, close it and start again code')
@@ -271,12 +217,11 @@ test['fan'] = [
 test['storage'] = [
     'https://www.citilink.ru/product/ssd-nakopitel-kingston-a400-sa400s37-480g-480gb-2-5-sata-iii-420253/properties/',
     'https://www.citilink.ru/product/zhestkii-disk-wd-s-sata-iii-1tb-wd10ezex-caviar-blue-7200rpm-64mb-3-5-1776660/properties/',
-    'https://www.citilink.ru/product/zhestkii-disk-seagate-barracuda-st2000dm008-2tb-hdd-sata-iii-3-5-1187869/',
-    'https://www.citilink.ru/product/zhestkii-disk-toshiba-sata-iii-1tb-hdwd110uzsva-p300-7200rpm-64mb-3-5-1793672/',
-    'https://www.citilink.ru/product/nakopitel-ssd-digma-sata-iii-256gb-dgsr2256gs93t-run-s9-2-5-1651620/',
-    'https://www.citilink.ru/product/nakopitel-ssd-kingspec-pci-e-512gb-nx-512-m-2-2280-1742084/',
+    'https://www.citilink.ru/product/zhestkii-disk-seagate-barracuda-st2000dm008-2tb-hdd-sata-iii-3-5-1187869/properties/',
+    'https://www.citilink.ru/product/zhestkii-disk-toshiba-sata-iii-1tb-hdwd110uzsva-p300-7200rpm-64mb-3-5-1793672/properties/',
+    'https://www.citilink.ru/product/nakopitel-ssd-digma-sata-iii-256gb-dgsr2256gs93t-run-s9-2-5-1651620/properties/',
+    'https://www.citilink.ru/product/nakopitel-ssd-kingspec-pci-e-512gb-nx-512-m-2-2280-1742084/properties/',
 ]
-
 test['cpu'] = [
     'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5800x-am4-100-000000063-3-8ghz-oem-1773839/properties/',
     'https://www.citilink.ru/product/processor-amd-s-ryzen-7-3700x-am4-100-000000071-3-6ghz-oem-1804883/properties/',
@@ -301,13 +246,22 @@ test['ram'] = [
     'https://www.citilink.ru/product/pamyat-ddr5-2x16gb-6000mhz-kingston-kf560c40bbk2-32-fury-beast-rtl-cl4-1676551/properties/',
     'https://www.citilink.ru/product/modul-pamyati-patriot-xms3-dhx-psd38g16002-ddr3-8gb-1600-dimm-ret-352753/properties/',
 ]
-# datas = []
-# for link in test['gpu']:
-#     datas.append(gpu(link))
-
-# for data in datas:
-#     print(data)
-#     print('___')
+test['motherboard'] = [
+    'https://www.citilink.ru/product/materinskaya-plata-msi-h510m-a-pro-soc-1200-intel-h510-2xddr4-matx-ac-1564800/properties/',
+    'https://www.citilink.ru/product/materinskaya-plata-gigabyte-h410m-h-v2-soc-1200-intel-h470-2xddr4-matx-1530431/properties/',
+    'https://www.citilink.ru/product/materinskaya-plata-gigabyte-b450m-h-socketam4-amd-b450-matx-ret-1362027/properties/',
+    'https://www.citilink.ru/product/materinskaya-plata-gigabyte-x670-gaming-x-ax-socketam5-amd-x670-4xddr5-1875586/properties/',
+    'https://www.citilink.ru/product/materinskaya-plata-gigabyte-x670-aorus-elite-ax-socketam5-amd-x670-4xd-1875584/properties/',
+]
+test['power_unit'] = [
+    'https://www.citilink.ru/product/blok-pitaniya-gigabyte-atx-750w-aorus-gp-ap850gm-80-gold-24-4-4pin-apf-1422488/properties/',
+    'https://www.citilink.ru/product/blok-pitaniya-cooler-master-mwe-white-500w-v2-500vt-120mm-retail-mpe-5-1446111/properties/',
+    'https://www.citilink.ru/product/blok-pitaniya-deepcool-atx-450w-pf450-80-plus-white-20-4pin-apfc-120mm-1781886/properties/',
+    'https://www.citilink.ru/product/blok-pitaniya-gigabyte-atx-450w-gp-p450b-80-bronze-24-4-4pin-apfc-120m-1422333/properties/',
+    'https://www.citilink.ru/product/blok-pitaniya-gigabyte-atx-750w-gp-ud750gm-80-gold-24-2x-4-4-pin-apfc-1777099/properties/',
+    'https://www.citilink.ru/product/blok-pitaniya-aerocool-aero-white-500vt-120mm-chernyi-retail-aero-whit-1207077/properties/',
+]
 
 for key, links in test.items():
     parsing(links, key)
+# parsing(test['fan'], 'fan')
