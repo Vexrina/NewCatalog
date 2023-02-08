@@ -13,29 +13,29 @@ FastAPI, Sqlite, Selenium, Jinja2
 
 # Roadmap//Дорожная карта
 
-[x] ~~ Make a working website with clickable pseudo-products and transitions to a new page.~~
+- [X] ~~Make a working website with clickable pseudo-products and transitions to a new page.~~
 
-[] Collect product data (CPU, GPU, RAM, etc.) from official sites ~~(AMD, NVIDIA, INTEL, etc.)~~
+- [ ] Collect product data (CPU, GPU, RAM, etc.) from official sites ~~(AMD, NVIDIA, INTEL, etc.)~~
 
-[x] ~~ Make price data collection in the largest retailers - DNS, Citilink, Online-Trade, Regard ~~
+- [X] ~~Make price data collection in the largest retailers - DNS, Citilink, Online-Trade, Regard~~
 
-[] Make an average performance data collection in synthetics
+- [ ] Make an average performance data collection in synthetics
 
-[] Make data collection on average performance in video games
+- [ ] Make data collection on average performance in video games
 
-[] launch?
+- [ ] launch?
 ___
-[x] ~~ Сделать рабочий сайт, с кликабельными псевдотоварами и переходами на новую страницу. ~~
+- [X] ~~Сделать рабочий сайт, с кликабельными псевдотоварами и переходами на новую страницу.~~
 
-[] Сделать сбор данных о товарах (CPU, GPU, RAM, др.) с оффициальных сайтов ~~(AMD, NVIDIA, INTEL, др.)~~ 
+- [ ] Сделать сбор данных о товарах (CPU, GPU, RAM, др.) с оффициальных сайтов ~~(AMD, NVIDIA, INTEL, др.)~~ 
 
-[x] ~~ Сделать сбор данных о ценах в крупнейших ретейлерах - DNS, Citilink, Online-Trade, Regard ~~
+- [X] ~~Сделать сбор данных о ценах в крупнейших ретейлерах - DNS, Citilink, Online-Trade, Regard~~
 
-[] Сделать сбор данных о средней производительности в синтетике
+- [ ] Сделать сбор данных о средней производительности в синтетике
 
-[] Сделать сбор данных о средней производительности в видеоиграх
+- [ ] Сделать сбор данных о средней производительности в видеоиграх
 
-[] Запуск?
+- [ ] Запуск?
 
 # Maded by Vexrina
 
