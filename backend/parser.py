@@ -172,7 +172,6 @@ def power_unit(link: str) -> dict:
 
 def parsing(links: list[dict], what_parse: str):
     data = []
-    # bad_links = []
     match what_parse:
         case 'fan':
             for link in links:
@@ -280,4 +279,3 @@ test['power_unit'] = [
 
 for key, links in test.items():
     parsing(links, key)
-# parsing(test['fan'], 'fan')
