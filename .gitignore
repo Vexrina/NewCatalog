@@ -1,4 +1,5 @@
 test*.*py*
+*.xlsx
 .google-cookie
 /pages/*
 # Byte-compiled / optimized / DLL files
