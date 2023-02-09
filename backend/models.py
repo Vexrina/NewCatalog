@@ -51,8 +51,6 @@ class cpus_prices(Base):
     __tablename__ = 'cpus_prices'
 
     uuid = Column(Integer, primary_key=True, index=True)
-    ozon_avg_rus = Column(Numeric)
-    ozon_avg_abroad = Column(Numeric)
     dns = Column(Numeric)
     online_trade = Column(Numeric)
     regard = Column(Numeric)
