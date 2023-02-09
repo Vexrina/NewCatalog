@@ -15,7 +15,7 @@ FastAPI, Sqlite, Selenium, Jinja2
 
 - [X] ~~Make a working website with clickable pseudo-products and transitions to a new page.~~
 
-- [ ] Collect product data (CPU, GPU, RAM, etc.) from official sites ~~(AMD, NVIDIA, INTEL, etc.)~~
+- [X] Collect product data (CPU, GPU, RAM, etc.) from official sites ~~(AMD, NVIDIA, INTEL, etc.)~~
 
 - [X] ~~Make price data collection in the largest retailers - DNS, Citilink, Online-Trade, Regard~~
 
@@ -27,7 +27,7 @@ FastAPI, Sqlite, Selenium, Jinja2
 ___
 - [X] ~~Сделать рабочий сайт, с кликабельными псевдотоварами и переходами на новую страницу.~~
 
-- [ ] Сделать сбор данных о товарах (CPU, GPU, RAM, др.) с оффициальных сайтов ~~(AMD, NVIDIA, INTEL, др.)~~ 
+- [X] Сделать сбор данных о товарах (CPU, GPU, RAM, др.) с оффициальных сайтов ~~(AMD, NVIDIA, INTEL, др.)~~ 
 
 - [X] ~~Сделать сбор данных о ценах в крупнейших ретейлерах - DNS, Citilink, Online-Trade, Regard~~
 
