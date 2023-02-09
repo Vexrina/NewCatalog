@@ -280,8 +280,15 @@ test['power_unit'] = [
     'https://www.citilink.ru/product/blok-pitaniya-aerocool-aero-white-500vt-120mm-chernyi-retail-aero-whit-1207077/properties/',
 ]
 
-# for key, links in test.items():
-#     parsing(links, key)
+for key, links in test.items():
+    parsing(links, key)
 
 # response = httpx.get('https://www.citilink.ru/product/blok-pitaniya-aerocool-aero-white-500vt-120mm-chernyi-retail-aero-whit-1207077/properties/')
 # print(response.status_code)
+#
+# count_links = 0
+# for key, links in test.items():
+    # for link in links:
+        # count_links+=1
+#
+# print(count_links)
