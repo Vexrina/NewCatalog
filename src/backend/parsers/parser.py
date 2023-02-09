@@ -34,7 +34,7 @@ def get_data(link: str) -> list[str]:
         a = spec.split('\n')
         for item in a:
             full_spec.append(item)
-
+            
     k = 0
     while (k != len(full_spec)):
         full_spec[k] = full_spec[k].strip()
@@ -213,6 +213,7 @@ def parsing(links: list[dict], what_parse: str):
                     data.append(temp)
 
     df = pd.DataFrame.from_dict(data)
+    # TODO TO SQLITE
     try:
         book = load_workbook(r'backend/database.xlsx')
         writer = pd.ExcelWriter(r'backend/database.xlsx', engine='openpyxl')

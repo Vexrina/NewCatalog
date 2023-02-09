@@ -1,14 +1,28 @@
 from typing import Any
-import generate_page
+# import generate_page
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 
+from sqlalchemy.orm import Session
+
+
+from src.backend import crud, models,  schemas
+from src.backend.database import SessionLocal, engine
+
 
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 app.mount(
     '/static/',
     StaticFiles(directory=Path(__file__).parent.parent/'static'),
@@ -19,13 +33,13 @@ templates = Jinja2Templates(directory='pages')
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request) -> Any:
-    generate_page.generate_homepage()
+    # generate_page.generate_homepage()
     context = {'request':request}
     return templates.TemplateResponse("homepage.html", context)
 
 @app.get('/cpu/')
 async def cpus(request: Request):
-    generate_page.generate_category_page('cpu')
+    # generate_page.generate_category_page('cpu')
     context = {'request':request}
     return templates.TemplateResponse("cpu.html", context)
 
