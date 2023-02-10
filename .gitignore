@@ -2,7 +2,7 @@ test*.*py*
 *.xlsx
 .idea
 .google-cookie
-/pages/*
+/src/pages/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
