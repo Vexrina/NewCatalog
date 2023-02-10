@@ -9,10 +9,8 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
-
 from src.backend import crud, models,  schemas
 from src.backend.database import SessionLocal, engine
-
 
 app = FastAPI()
 
@@ -29,7 +27,7 @@ app.mount(
     name='static',
 )
 
-templates = Jinja2Templates(directory='pages')
+templates = Jinja2Templates(directory=Path(__file__).parent.parent/'pages')
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request) -> Any:

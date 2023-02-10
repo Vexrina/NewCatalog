@@ -56,6 +56,10 @@ class CpuBase(BaseModel):
     model: str
 
 
+class CpuCreate(CpuBase):
+    pass
+
+
 class Cpu(CpuBase):
     uuid: int
     specs: list[CpuSpecs] = []
