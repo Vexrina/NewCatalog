@@ -6,18 +6,18 @@ class CpuSpecsBase(BaseModel):
     socket: str
     num_cores: int
     num_thr: int
-    clock: float
     cache: int
+    clock: str
     nm: int
-    oveclock: bool
+    overclock: int
     tdp: int
     max_temp: int
-    memory_type: int
-    memory_clock: int
+    memory_type: str
+    memory_clock: str
     memory_channels: int
-    videocore: bool = False
-    model_videocore: int
-    clock_videocore: int
+    videocore: int = 0
+    model_videocore: str
+    clock_videocore: str
 
 
 class CpuSpecsCreate(CpuSpecsBase):
