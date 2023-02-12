@@ -1,19 +1,11 @@
-import logging
-from sqlalchemy.orm import Session
-
 from src.backend import models
 from src.backend.cruds import cpu_crud
-from src.backend.schemas import cpu_schemas
 from src.backend.parsers.new_old_keys import cpu_new_keys, cpu_old_keys
 from src.backend.database import SessionLocal, engine
-from src.backend.parsers.cpu_to_parse import intel, amd
-from src.backend.parsers.parser import parsing, cpu
-
+from src.backend.parsers.parser import parsing
 
 models.cpu_models.Base.metadata.create_all(bind=engine)
 models.store_benchmarks_models.Base.metadata.create_all(bind=engine)
-intels_cpu = intel
-amds_cpu = amd
 
 
 def get_db():
@@ -23,9 +15,6 @@ def get_db():
     finally:
         db.close()
 
-
-data = cpu(intels_cpu[0])
-# print(data)
 
 def rename_keys(specs: dict, old_key: list[str], new_keys: list[str]) -> dict:
     step = 0
@@ -60,38 +49,24 @@ def switch_types(specs: dict, category: str) -> dict:
     return specs
 
 
-data = rename_keys(data, cpu_old_keys, cpu_new_keys)
-data = switch_types(data, 'cpu')
-
-
 def create_cpu(cpu_data: dict) -> models.cpu_models.Cpus:
     return cpu_crud.create_cpu(cpu_data)
 
 
-def create_specs_cpu(cpu_id: int, specs: dict):
+def create_specs_cpu(cpu_id: int, specs: dict) -> models.cpu_models.Cpus_Specs:
     return cpu_crud.create_cpu_specs(specs=specs, cpu_owner_id=cpu_id)
 
 
-cpu = dict()
-cpu['brand'] = data.pop('brand')
-cpu['model'] = data.pop('model')
-for k, v in data.items():
-    print(f'{k}__{v}__{type(v)}')
-id = create_cpu(cpu_data=cpu).uuid
-print(id)
-create_specs_cpu(specs=data, cpu_id=id)
-
-
 def fill_db(links: list[str], category: str):
-    try:
-        datas = parsing(links, category)
-        for step in range(len(datas)):
-            datas[step] = rename_keys(datas[step], cpu_old_keys, cpu_new_keys)
-            datas[step] = switch_types(datas[step], category)
-            cpu = dict()
-            cpu['brand'] = datas[step].pop('brand')
-            cpu['model'] = datas[step].pop('model')
-            id = create_cpu(cpu).uuid
-
-    except Exception as err:
-        logging.error(f'Bad status code: {type(err)}: {err}')
+    datas, links = parsing(links, category)
+    match category:
+        case 'cpu':
+            for step in range(len(datas)):
+                datas[step] = rename_keys(datas[step], cpu_old_keys, cpu_new_keys)
+                datas[step] = switch_types(datas[step], category)
+                cpu_main_data = {'brand': datas[step].pop('brand'), 'model': datas[step].pop('model')}
+                cpu_id = create_cpu(cpu_main_data).uuid
+                create_specs_cpu(specs=datas, cpu_id=cpu_id)
+        case _:
+            raise ValueError('not implemented')
+    print(links)

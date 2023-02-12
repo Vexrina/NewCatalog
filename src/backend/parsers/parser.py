@@ -1,6 +1,7 @@
 import time
 from random import randint
 
+from httpx import HTTPError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -112,7 +113,7 @@ def cpu(link: str) -> dict:
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
-        timeout = randint(5, 10)
+        timeout = randint(5, 30)
         print(f'Trying again, waiting for timeout {timeout}')
         time.sleep(timeout)
         step += 1
@@ -193,10 +194,9 @@ def power_unit(link: str) -> dict:
     return del_keys(utlk.pu_keys, preresult)
 
 
-def parsing(links: list[str], what_parse: str)-> list[dict]:
-    response = httpx.get('https://www.citilink.ru/')
-    response.raise_for_status()
+def parsing(links: list[str], what_parse: str) -> (list[dict], list[str]):
     data = []
+    parsed_links = []
     match what_parse:
         case 'fan':
             for link in links:
@@ -209,13 +209,18 @@ def parsing(links: list[str], what_parse: str)-> list[dict]:
                     print(f'link is bad\n{link}')
         case 'cpu':
             for link in links:
-                response = httpx.get(link)
-                response.raise_for_status()
-                temp = cpu(link)
-                if len(temp) != 0:
-                    data.append(temp)
-                else:
-                    print(f'link is bad\n{link}')
+                try:
+                    response = httpx.get(link)
+                    response.raise_for_status()
+                    temp = cpu(link)
+                    if len(temp) != 0:
+                        data.append(temp)
+                        parsed_links.append(link)
+                    else:
+                        print(f'link is bad\n{link}')
+                except HTTPError as err:
+                    print(f'Congrats, u have timeout on citilink.ru.\n{type(err)}:{err}')
+                    return data, parsed_links
         case 'gpu':
             for link in links:
                 response = httpx.get(link)
@@ -259,4 +264,4 @@ def parsing(links: list[str], what_parse: str)-> list[dict]:
                     data.append(temp)
                 else:
                     print(f'link is bad\n{link}')
-    return data
+    return data, parsed_links
