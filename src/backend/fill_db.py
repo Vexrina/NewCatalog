@@ -3,7 +3,8 @@ from src.backend.cruds import cpu_crud
 from src.backend.parsers.new_old_keys import cpu_new_keys, cpu_old_keys
 from src.backend.database import SessionLocal, engine
 from src.backend.parsers.parser import parsing
-
+from src.backend.parsers.cpu_to_parse import intel
+from src.backend.datas import after_parse
 models.cpu_models.Base.metadata.create_all(bind=engine)
 models.store_benchmarks_models.Base.metadata.create_all(bind=engine)
 
@@ -57,8 +58,7 @@ def create_specs_cpu(cpu_id: int, specs: dict) -> models.cpu_models.Cpus_Specs:
     return cpu_crud.create_cpu_specs(specs=specs, cpu_owner_id=cpu_id)
 
 
-def fill_db(links: list[str], category: str):
-    datas, links = parsing(links, category)
+def fill_db(datas: list[dict], category: str):
     match category:
         case 'cpu':
             for step in range(len(datas)):
@@ -66,7 +66,8 @@ def fill_db(links: list[str], category: str):
                 datas[step] = switch_types(datas[step], category)
                 cpu_main_data = {'brand': datas[step].pop('brand'), 'model': datas[step].pop('model')}
                 cpu_id = create_cpu(cpu_main_data).uuid
-                create_specs_cpu(specs=datas, cpu_id=cpu_id)
+                create_specs_cpu(specs=datas[step], cpu_id=cpu_id)
         case _:
             raise ValueError('not implemented')
-    print(links)
+
+fill_db(after_parse, 'cpu')
