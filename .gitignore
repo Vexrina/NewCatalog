@@ -3,6 +3,7 @@ test*.*py*
 .idea
 .google-cookie
 /src/pages/*
+*.bkp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
