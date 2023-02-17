@@ -54,6 +54,7 @@ class CpuPrices(CpuSpecsBase):
 class CpuBase(BaseModel):
     brand: str
     model: str
+    images: str
 
 
 class CpuCreate(CpuBase):

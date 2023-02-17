@@ -5,11 +5,12 @@ from src.backend.database import Base
 
 
 class Cpus(Base):
-    __tablename__ = 'CPU'
+    __tablename__ = 'CPUs'
 
     uuid = Column(Integer, primary_key=True, index=True)
     brand = Column(String)
     model = Column(String, unique=True)
+    image = Column(String, unique=True, nullable=True)
 
     specs = relationship('Cpus_Specs', back_populates='CPU_owner')
     prices = relationship('Cpus_prices', back_populates='CPU_owner')
@@ -19,7 +20,7 @@ class Cpus_Specs(Base):
     __tablename__ = 'CPU_Specs'
 
     uuid = Column(Integer, primary_key=True, index=True)
-    cpu_id = Column(Integer, ForeignKey('CPU.uuid'))
+    cpu_id = Column(Integer, ForeignKey('CPUs.uuid'))
     socket = Column(String)
     num_cores = Column(Integer)
     num_thr = Column(Integer)
@@ -46,7 +47,7 @@ class Cpus_prices(Base):
     price = Column(Numeric)
 
     store = Column(Integer, ForeignKey('Stores.uuid'))
-    id_from = Column(Integer, ForeignKey('CPU.uuid'))
+    id_from = Column(Integer, ForeignKey('CPUs.uuid'))
 
     Store_owner = relationship('Stores', back_populates='store')
     CPU_owner = relationship('Cpus', back_populates='prices')
