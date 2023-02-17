@@ -1,13 +1,18 @@
 from typing import Any
 # import generate_page
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 
+import src.app.generate_page as gp
+
+from sqlalchemy.orm import Session
 from src.backend.database import SessionLocal
+from src.backend.schemas import cpu_schemas
+from src.backend.cruds import cpu_crud
 
 app = FastAPI()
 
@@ -31,14 +36,15 @@ templates = Jinja2Templates(directory=Path(__file__).parent.parent / 'pages')
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request) -> Any:
-    # generate_page.generate_homepage()
+    gp.generate_homepage()
     context = {'request': request}
     return templates.TemplateResponse("homepage.html", context)
 
 
-@app.get('/cpu/')
-async def cpus(request: Request):
-    # generate_page.generate_category_page('cpu')
+@app.get('/cpu/', response_model=list[cpu_schemas.Cpu])
+async def cpus(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    CPUs = cpu_crud.get_cpus(db=db, skip=skip, limit=limit)
+    gp.generate_category_page(query_result=CPUs, category='cpu')
     context = {'request': request}
     return templates.TemplateResponse("cpu.html", context)
 
