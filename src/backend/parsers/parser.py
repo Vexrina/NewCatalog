@@ -1,5 +1,12 @@
+import os
+import pathlib
+import shutil
+
 import time
 from random import randint
+import logging
+import re
+import httpx
 
 from httpx import HTTPError
 from selenium import webdriver
@@ -7,12 +14,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.proxy import Proxy, ProxyType
 from webdriver_manager.chrome import ChromeDriverManager
-import logging
-import re
-import httpx
+from fake_useragent import UserAgent
+
+from src.backend.parsers.cpu_to_parse import amd
+from src.backend.parsers.proxyHTTP import proxy
+
 import src.backend.parsers.useless_title_and_keys as utlk
 
+# for saving images while parsing
+root = pathlib.Path(__file__).parent.parent
+
+image_path = root / 'images' / 'new_image.png'
+new_image_path = root / 'images'
+# for saving images while parsing
+
+# settings of selenium
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
@@ -20,38 +39,65 @@ service = Service(ChromeDriverManager().install())
 
 LOGGER.setLevel(logging.WARNING)
 
+prox = Proxy()
+prox.proxy_type = ProxyType.MANUAL
 
-# webdriver.DesiredCapabilities.CHROME['proxy']
+capabilities = webdriver.DesiredCapabilities.CHROME
+
+
+# settings of selenium
+
+
+def randomize_driver() -> None:
+    prox.http_proxy = proxy[randint(0, len(proxy) - 1)]
+    size_x = randint(300, 1920)
+    size_y = randint(600, 1080)
+    ua = UserAgent()
+    user_agent = ua.random
+    chrome_options.add_argument(f'user-agent={user_agent}')
+    chrome_options.add_argument(f'window-size={size_x},{size_y}')
+    prox.add_to_capabilities(capabilities)
+
+
+def find_elem(driver: webdriver, what_return: int, timeout: int = 300) -> WebElement | list[WebElement]:
+    while timeout > 0:
+        try:
+            match what_return:
+                case 1:
+                    return driver.find_elements(By.XPATH, '//main/div/div/div/div/div/div/ul/li')
+                case 2:
+                    return driver.find_element(By.XPATH, '//div/img')
+        except Exception as e:
+            print(f'Type error: {type(e)}\nError: {e}\n')
+            time.sleep(1)
+            timeout -= 1
+    raise RuntimeError('Can\'t load page')
+
 
 def get_data(link: str) -> list[str]:
     # add options=chrome_options
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    randomize_driver()
+    driver = webdriver.Chrome(service=service, options=chrome_options, desired_capabilities=capabilities)
     driver.get(link)
-    divs = driver.find_elements(By.CLASS_NAME, 'SpecificationsFull')
-    specs = []
-    for div in divs:
-        specs.append(div.get_attribute('outerHTML'))
-    driver.close()
-    full_spec = []
-    for spec in specs:
-        a = spec.split('\n')
-        for item in a:
-            full_spec.append(item)
+    try:
+        divs = find_elem(driver=driver, what_return=1)
+        image = find_elem(driver=driver, what_return=2)
+    except RuntimeError as e:
+        print(e)
+    else:
+        with image_path.open('wb') as file:
+            file.write(image.screenshot_as_png)
+        text = ''
+        for div in divs:
+            text = text + '\n' + div.text
+        driver.close()
+        specs = text.split('\n')
+        while specs[-1] != 'Дополнительные характеристики':
+            specs.pop()
 
-    k = 0
-    while k != len(full_spec):
-        full_spec[k] = full_spec[k].strip()
-        if full_spec[k].find('</div>') == 0:
-            full_spec.pop(k)
-        elif full_spec[k].find('</h4>') == 0:
-            full_spec.pop(k)
-        elif full_spec[k].find('<div') == 0:
-            full_spec.pop(k)
-        else:
-            k += 1
+        full_spec = list(filter(None, specs))
 
-    full_spec = list(filter(None, full_spec))
-    return full_spec
+        return full_spec
 
 
 def del_title(titles: list[str], full_spec: list[str]):
@@ -80,7 +126,7 @@ def del_keys(useless_keys: list[str], preresult: dict) -> dict:
 
 
 def fan(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -109,7 +155,7 @@ def fan(link: str) -> dict:
 
 
 def cpu(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -118,11 +164,14 @@ def cpu(link: str) -> dict:
         time.sleep(timeout)
         step += 1
     preresult = del_title(utlk.cpu_titles, full_spec)
+    src = preresult['Модель']
+    os.rename(image_path, new_image_path / f'{src}.png')
+    shutil.move(new_image_path / f'{src}.png', new_image_path / 'cpu' / f'{src}.png')
     return del_keys(utlk.cpu_keys, preresult)
 
 
 def gpu(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -135,7 +184,7 @@ def gpu(link: str) -> dict:
 
 
 def storage(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -152,7 +201,7 @@ def storage(link: str) -> dict:
 
 
 def ram(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -167,7 +216,7 @@ def ram(link: str) -> dict:
 
 
 def motherboard(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -182,7 +231,7 @@ def motherboard(link: str) -> dict:
 
 
 def power_unit(link: str) -> dict:
-    full_spec = []
+    full_spec = get_data(link)
     step = 0
     while len(full_spec) == 0 and step != 10:
         full_spec = get_data(link)
@@ -194,7 +243,7 @@ def power_unit(link: str) -> dict:
     return del_keys(utlk.pu_keys, preresult)
 
 
-def parsing(links: list[str], what_parse: str) -> (list[dict], list[str]):
+def parsing(links: list[str], what_parse: str) -> tuple[list[dict], list[str]]:
     data = []
     parsed_links = []
     match what_parse:
@@ -265,3 +314,14 @@ def parsing(links: list[str], what_parse: str) -> (list[dict], list[str]):
                 else:
                     print(f'link is bad\n{link}')
     return data, parsed_links
+
+
+links = [
+    amd[0],
+    amd[3],
+    amd[5]
+]
+
+data, _ = parsing(links, 'cpu')
+for item in data:
+    print(item)
