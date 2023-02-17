@@ -1,12 +1,19 @@
+import pathlib
+
 from src.backend import models
 from src.backend.cruds import cpu_crud
 from src.backend.parsers.new_old_keys import cpu_new_keys, cpu_old_keys
 from src.backend.database import SessionLocal, engine
 from src.backend.parsers.parser import parsing
-from src.backend.parsers.cpu_to_parse import intel
+from src.backend.parsers.cpu_to_parse import amd
 from src.backend.datas import after_parse
 models.cpu_models.Base.metadata.create_all(bind=engine)
 models.store_benchmarks_models.Base.metadata.create_all(bind=engine)
+
+root = pathlib.Path(__file__).parent
+
+image_path = root / 'images' / 'cpu'
+print(image_path)
 
 
 def get_db():
@@ -19,6 +26,8 @@ def get_db():
 
 def rename_keys(specs: dict, old_key: list[str], new_keys: list[str]) -> dict:
     step = 0
+    if 'L2 кэш' in specs:
+        specs.pop('L2 кэш')
     while step != len(specs):
         specs[new_keys[step]] = specs.pop(old_key[step])
         step += 1
@@ -42,10 +51,14 @@ def switch_types(specs: dict, category: str) -> dict:
                     specs['videocore'] = 1
                 case 'отсутствует':
                     specs['videocore'] = 0
+                    specs['model_videocore'] = None
+                    specs['clock_videocore'] = None
             for key, value in specs.items():
                 try:
                     specs[key] = int(value)
                 except ValueError:
+                    continue
+                except TypeError:
                     continue
     return specs
 
@@ -64,10 +77,22 @@ def fill_db(datas: list[dict], category: str):
             for step in range(len(datas)):
                 datas[step] = rename_keys(datas[step], cpu_old_keys, cpu_new_keys)
                 datas[step] = switch_types(datas[step], category)
-                cpu_main_data = {'brand': datas[step].pop('brand'), 'model': datas[step].pop('model')}
+                cpu_main_data = {
+                    'brand': datas[step].pop('brand'),
+                    'image': f'{image_path}\\{datas[step]["model"]}',
+                    'model': datas[step].pop('model')}
                 cpu_id = create_cpu(cpu_main_data).uuid
                 create_specs_cpu(specs=datas[step], cpu_id=cpu_id)
         case _:
             raise ValueError('not implemented')
 
-fill_db(after_parse, 'cpu')
+
+links = []
+for i in range(10):
+    links.append(amd[i])
+
+data, parsed_links = parsing(links, 'cpu')
+fill_db(data, 'cpu')
+
+for link in parsed_links:
+    print(link)

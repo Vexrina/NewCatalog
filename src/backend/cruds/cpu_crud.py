@@ -16,7 +16,7 @@ engine = create_engine(
 
 def create_cpu(cpu: dict) -> cpu_models.Cpus:
     with Session(engine) as db:
-        db_cpu = cpu_models.Cpus(brand=cpu['brand'], model=cpu['model'])
+        db_cpu = cpu_models.Cpus(brand=cpu['brand'], model=cpu['model'], image=cpu['image'])
         db.add(db_cpu)
         db.commit()
         db.refresh(db_cpu)
