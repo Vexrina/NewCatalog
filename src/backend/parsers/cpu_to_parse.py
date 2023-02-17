@@ -48,27 +48,27 @@ intel = [
 ]
 
 amd = [
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-5600x-am4-100-000000065-3-7ghz-oem-1773829/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-7600x-am5-100-000000593-4-7ghz-oem-1875231/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-pro-4650g-am4-100-000000143-3-7ghz-amd-radeon-1773827/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-3700x-am4-100-000000071-3-6ghz-oem-1804883/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-4700g-am4-100-000000146-3-6ghz-vega-8-oem-1856645/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5700g-am4-100-000000263-3-8ghz-vega-8-oem-1773852/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5800x-am4-100-000000063-3-8ghz-oem-1773839/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-7700x-am5-100-000000591-4-5ghz-oem-1875234/'
-    'https://www.citilink.ru/product/processor-amd-ryzen-7-pro-4750g-am4-100-000000145-3-6ghz-vega-8-oem-1630589/'
-    'https://www.citilink.ru/product/processor-amd-ryzen-7-5750g-am4-100-000000254-3-8ghz-vega-8-oem-1656953/'
-    'https://www.citilink.ru/product/processor-amd-ryzen-9-3950x-am4-100-000000051-3-5ghz-oem-1619339/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-5900x-am4-100-000000061-3-7ghz-oem-1773850/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-5950x-am4-100-000000059-3-4ghz-oem-1773854/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-7950x-am5-100-000000514-4-5ghz-oem-1875239/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-3-3200g-am4-yd3200c5m4mfh-3-6ghz-vega-8-oem-1804874/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-3-pro-4350g-am4-100-000000148-3-8ghz-amd-radeon-1773851/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-1600-am4-yd1600bbm6iae-3-2ghz-oem-1804876/'
-    'https://www.citilink.ru/product/processor-amd-ryzen-5-2600-socketam4-oem-yd2600bbm6iaf-1068556/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3400ge-am4-yd3400c6m4mfh-3-3ghz-amd-radeon-oem-1839953/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3500-am4-100-000000050-3-6ghz-oem-1857947/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3600-am4-100-000000031-3-6ghz-oem-1773826/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-4600g-am4-100-000000147-3-9ghz-amd-radeon-oem-1860980/'
-    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-5600g-am4-100-000000252-3-9ghz-amd-radeon-oem-1773831/'
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-5600x-am4-100-000000065-3-7ghz-oem-1773829/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-7600x-am5-100-000000593-4-7ghz-oem-1875231/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-pro-4650g-am4-100-000000143-3-7ghz-amd-radeon-1773827/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-3700x-am4-100-000000071-3-6ghz-oem-1804883/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-4700g-am4-100-000000146-3-6ghz-vega-8-oem-1856645/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5700g-am4-100-000000263-3-8ghz-vega-8-oem-1773852/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-5800x-am4-100-000000063-3-8ghz-oem-1773839/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-7-7700x-am5-100-000000591-4-5ghz-oem-1875234/properties/',
+    'https://www.citilink.ru/product/processor-amd-ryzen-7-pro-4750g-am4-100-000000145-3-6ghz-vega-8-oem-1630589/properties/',
+    'https://www.citilink.ru/product/processor-amd-ryzen-7-5750g-am4-100-000000254-3-8ghz-vega-8-oem-1656953/properties/',
+    'https://www.citilink.ru/product/processor-amd-ryzen-9-3950x-am4-100-000000051-3-5ghz-oem-1619339/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-5900x-am4-100-000000061-3-7ghz-oem-1773850/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-5950x-am4-100-000000059-3-4ghz-oem-1773854/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-9-7950x-am5-100-000000514-4-5ghz-oem-1875239/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-3-3200g-am4-yd3200c5m4mfh-3-6ghz-vega-8-oem-1804874/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-3-pro-4350g-am4-100-000000148-3-8ghz-amd-radeon-1773851/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-1600-am4-yd1600bbm6iae-3-2ghz-oem-1804876/properties/',
+    'https://www.citilink.ru/product/processor-amd-ryzen-5-2600-socketam4-oem-yd2600bbm6iaf-1068556/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3400ge-am4-yd3400c6m4mfh-3-3ghz-amd-radeon-oem-1839953/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3500-am4-100-000000050-3-6ghz-oem-1857947/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-3600-am4-100-000000031-3-6ghz-oem-1773826/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-4600g-am4-100-000000147-3-9ghz-amd-radeon-oem-1860980/properties/',
+    'https://www.citilink.ru/product/processor-amd-s-ryzen-5-5600g-am4-100-000000252-3-9ghz-amd-radeon-oem-1773831/properties/',
 ]
