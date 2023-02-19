@@ -19,7 +19,6 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from webdriver_manager.chrome import ChromeDriverManager
 from fake_useragent import UserAgent
 
-from src.backend.parsers.cpu_to_parse import amd
 from src.backend.parsers.proxyHTTP import proxy
 
 import src.backend.parsers.useless_title_and_keys as utlk
@@ -314,14 +313,3 @@ def parsing(links: list[str], what_parse: str) -> tuple[list[dict], list[str]]:
                 else:
                     print(f'link is bad\n{link}')
     return data, parsed_links
-
-
-links = [
-    amd[0],
-    amd[3],
-    amd[5]
-]
-
-data, _ = parsing(links, 'cpu')
-for item in data:
-    print(item)
