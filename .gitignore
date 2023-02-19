@@ -4,6 +4,8 @@ test*.*py*
 .google-cookie
 /src/pages/*
 *.bkp
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
