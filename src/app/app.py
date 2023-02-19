@@ -43,15 +43,12 @@ async def root(request: Request) -> Any:
     return templates.TemplateResponse("homepage.html", context)
 
 
-@app.get('/cpu/', response_model=list[cpu_schemas.Cpu])
-async def cpus(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    Cpus = cpu_crud.get_cpus(db=db, skip=skip, limit=limit)
-    gp.generate_category_page(query_result=Cpus, category='cpu')
-
+@app.get('/cpu/', response_class=HTMLResponse)
+async def cpus(request: Request):
+    if not os.path.exists(pages_dir/'cpu.html'):
+        gp.generate_category_page('cpu')
     context = {'request': request}
-    return Cpus
-    # return templates.TemplateResponse("homepage.html", context)
-    # return context
+    return templates.TemplateResponse("cpu.html", context)
 
 
 @app.get('/gpu/')

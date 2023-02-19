@@ -9,7 +9,6 @@ from src.backend.cruds import cpu_crud
 
 directory = Path(__file__).parent.parent
 
-
 def take_header_items() -> list[dict]:
     header_items = []
 
@@ -105,15 +104,31 @@ def generate_category_page(category: str) -> None:
     file_loader = FileSystemLoader(directory/'templates')
     env = Environment(loader=file_loader)
 
-    data = take_db_items(query='cpu', filters=None)
+    datas = take_db_items(query='cpu', filters=None)
+    titles = []
+    images = []
+    specs = []
+    for data in datas:
+        titles.append(f'{data["brand"]} {data["model"]}')
+        images.append(f'{data["image"]}.png')
+        data['specs'].__dict__.pop('_sa_instance_state')
+        data['specs'].__dict__.pop('uuid')
+        specs.append(data['specs'].__dict__)
+
+    common_prefix = os.path.commonprefix(images)
+    rel_images = [os.path.relpath(image, common_prefix) for image in images]
 
     rendered = env.get_template('category.html').render(
         header_items=header_items,
         Category=category,
-        items=data
+        specs=specs,
+        images=rel_images,
+        titles=titles
     )
 
-    with open(f'./pages/{category.lower()}.html', 'w',  encoding='UTF-8') as f:
+    with open(directory / 'pages' / f'{category.lower()}.html', 'w',  encoding='UTF-8') as f:
         f.write(rendered)
     print('Html is rendered')
 
+
+generate_category_page('cpu')
