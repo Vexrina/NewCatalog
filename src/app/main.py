@@ -1,7 +1,7 @@
-import httpx
-from src.backend.parsers.cpu_to_parse import amd
-from src.backend.parsers.parser import parsing
+import uvicorn
 
-response = httpx.get('https://www.citilink.ru/')
-print(response.status_code)
+from src.app.app import app
+
+if __name__ == "__main__":
+    uvicorn.run(app)
 

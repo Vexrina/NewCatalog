@@ -1,5 +1,5 @@
 from typing import Any
-# import generate_page
+import os
 
 from fastapi import FastAPI, Request, Depends
 from fastapi.staticfiles import StaticFiles
@@ -31,22 +31,27 @@ app.mount(
     name='static',
 )
 
-templates = Jinja2Templates(directory=Path(__file__).parent.parent / 'pages')
+pages_dir = Path(__file__).parent.parent/'pages'
+templates = Jinja2Templates(directory=pages_dir)
 
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request) -> Any:
-    gp.generate_homepage()
+    if not os.path.exists(pages_dir/'homepage.html'):
+        gp.generate_homepage()
     context = {'request': request}
     return templates.TemplateResponse("homepage.html", context)
 
 
 @app.get('/cpu/', response_model=list[cpu_schemas.Cpu])
 async def cpus(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    CPUs = cpu_crud.get_cpus(db=db, skip=skip, limit=limit)
-    gp.generate_category_page(query_result=CPUs, category='cpu')
+    Cpus = cpu_crud.get_cpus(db=db, skip=skip, limit=limit)
+    gp.generate_category_page(query_result=Cpus, category='cpu')
+
     context = {'request': request}
-    return templates.TemplateResponse("cpu.html", context)
+    return Cpus
+    # return templates.TemplateResponse("homepage.html", context)
+    # return context
 
 
 @app.get('/gpu/')
