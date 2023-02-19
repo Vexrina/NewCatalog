@@ -4,9 +4,7 @@ from src.backend import models
 from src.backend.cruds import cpu_crud
 from src.backend.parsers.new_old_keys import cpu_new_keys, cpu_old_keys
 from src.backend.database import SessionLocal, engine
-from src.backend.parsers.parser import parsing
-from src.backend.parsers.cpu_to_parse import amd
-from src.backend.datas import after_parse
+
 models.cpu_models.Base.metadata.create_all(bind=engine)
 models.store_benchmarks_models.Base.metadata.create_all(bind=engine)
 
@@ -85,14 +83,3 @@ def fill_db(datas: list[dict], category: str):
                 create_specs_cpu(specs=datas[step], cpu_id=cpu_id)
         case _:
             raise ValueError('not implemented')
-
-
-links = []
-for i in range(10):
-    links.append(amd[i])
-
-data, parsed_links = parsing(links, 'cpu')
-fill_db(data, 'cpu')
-
-for link in parsed_links:
-    print(link)
