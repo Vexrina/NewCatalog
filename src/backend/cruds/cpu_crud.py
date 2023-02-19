@@ -1,17 +1,10 @@
-from typing import List, Type
+from typing import Type, Any, List
 
-from sqlalchemy.orm import Session
-
-from src.backend.database import SessionLocal
-from src.backend.schemas import cpu_schemas
 from src.backend.models import cpu_models
-from sqlalchemy import create_engine
+from src.backend.models.cpu_models import Cpus
+from src.backend.schemas import cpu_schemas
 from sqlalchemy.orm import Session
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///./newcatalog_db.db"
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
-)
+from src.backend.database import engine
 
 
 def create_cpu(cpu: dict) -> cpu_models.Cpus:
@@ -55,17 +48,25 @@ def get_cpu(db: Session, cpu_id: int) -> cpu_models.Cpus | None:
     return db.query(cpu_models.Cpus).filter(cpu_models.Cpus.uuid == cpu_id).first()
 
 
-def get_cpu_by_model(model: str, db: Session) -> cpu_models.Cpus | None:
-    return db.query(cpu_models.Cpus).filter(cpu_models.Cpus.model == model).first()
+def get_cpu_by_model(model: str):
+    with Session(engine) as db:
+        return db.query(cpu_models.Cpus).filter(cpu_models.Cpus.model == model).first()
 
 
-def get_cpu_by_brand(db: Session, brand: str) -> cpu_models.Cpus | None:
-    return db.query(cpu_models.Cpus).filter(cpu_models.Cpus.brand == brand).first()
+def get_cpu_by_brand(brand: str):
+    with Session(engine) as db:
+        return db.query(cpu_models.Cpus).filter(cpu_models.Cpus.brand == brand).all()
 
 
-def get_cpus(db: Session, skip: int = 0, limit: int = 100) -> list[Type[cpu_models.Cpus]]:
-    return db.query(cpu_models.Cpus).offset(skip).limit(limit).all()
+def get_cpus(skip: int = 0, limit: int = 100):
+    with Session(engine) as db:
+        return db.query(cpu_models.Cpus).offset(skip).limit(limit).all()
 
 
 def get_cpu_specs(db: Session, skip: int = 0, limit: int = 100):
     return db.query(cpu_models.Cpus.specs).offset(skip).limit(limit).all()
+
+
+def get_cpu_specs_by_cpuid(cpu_id: int):
+    with Session(engine) as db:
+        return db.query(cpu_models.Cpus_Specs).filter(cpu_models.Cpus_Specs.cpu_id == cpu_id).first()

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Numeric, SmallInteger
+from sqlalchemy import Column, ForeignKey, Integer, String, Numeric
 from sqlalchemy.orm import relationship
 
 from src.backend.database import Base
@@ -34,8 +34,8 @@ class Cpus_Specs(Base):
     memory_clock = Column(String)
     memory_channels = Column(Integer)
     videocore = Column(Integer, default=0)
-    model_videocore = Column(String)
-    clock_videocore = Column(String)
+    model_videocore = Column(String, nullable=True)
+    clock_videocore = Column(String, nullable=True)
 
     CPU_owner = relationship('Cpus', back_populates='specs')
 

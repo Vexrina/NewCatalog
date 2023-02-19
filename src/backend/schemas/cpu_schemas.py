@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from decimal import *
 
+from sqlalchemy.orm.collections import InstrumentedList
+
 
 class CpuSpecsBase(BaseModel):
     socket: str
@@ -16,8 +18,8 @@ class CpuSpecsBase(BaseModel):
     memory_clock: str
     memory_channels: int
     videocore: int = 0
-    model_videocore: str
-    clock_videocore: str
+    model_videocore: str | None
+    clock_videocore: str | None
 
 
 class CpuSpecsCreate(CpuSpecsBase):
@@ -32,23 +34,23 @@ class CpuSpecs(CpuSpecsBase):
         orm_mode = True
 
 
-class CpuPricesBase(BaseModel):
-    price: Decimal
-    store: int
-
-
-class CpuPricesCreate(CpuSpecsBase):
-    pass
-
-
-class CpuPrices(CpuSpecsBase):
-    uuid: int
-
-    CPU_owner: int
-    Store_owner: int
-
-    class Config:
-        orm_mode = True
+# class CpuPricesBase(BaseModel):
+#     price: Decimal
+#     store: int
+#
+#
+# class CpuPricesCreate(CpuSpecsBase):
+#     pass
+#
+#
+# class CpuPrices(CpuSpecsBase):
+#     uuid: int
+#
+#     CPU_owner: int
+#     Store_owner: int
+#
+#     class Config:
+#         orm_mode = True
 
 
 class CpuBase(BaseModel):
@@ -63,5 +65,7 @@ class CpuCreate(CpuBase):
 
 class Cpu(CpuBase):
     uuid: int
-    specs: list[CpuSpecs] = []
-    prices: list[CpuPrices] = []
+    specs: CpuSpecs
+
+    class Config:
+        orm_mode = True
