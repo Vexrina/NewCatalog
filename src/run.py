@@ -1,14 +1,16 @@
-import httpx
-from src.backend.parsers.to_parse.cpus import amd
-from src.backend.parsers.parser import parsing
-from src.backend.fill_db import fill_db
+from src.backend.parsers.to_parse import cpus, gpus, power_units, ssd, fans, hdd
 
-response = httpx.get('https://www.citilink.ru/')
-print(response.status_code)
+a = [
+    len(cpus.amd),
+    len(gpus.amd),
+    len(cpus.intel),
+    len(gpus.nvidia),
+    len(power_units.to_parse),
+    len(ssd.to_parse),
+    len(fans.to_parse),
+    len(hdd.to_parse)
+]
 
-links = []
-for i in range(10):
-    links.append(amd[i])
-
-data, parsed_links = parsing(links, 'cpu')
-fill_db(data, 'cpu')
+b = sum(a)+60*2+60
+print(b)
+print(b*4)
