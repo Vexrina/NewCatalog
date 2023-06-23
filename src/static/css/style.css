@@ -702,3 +702,14 @@ body {
     margin-top: 8px;
     margin-left: 24px
 }
+.to__position{
+    background-color: #D88144;
+    height: 48px;
+    width: 128px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    border-radius: 24px;
+    border-color: white;
+    box-shadow: none;
+}
+

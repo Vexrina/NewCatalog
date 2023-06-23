@@ -104,7 +104,7 @@ def generate_category_page(category: str) -> None:
     file_loader = FileSystemLoader(directory/'templates')
     env = Environment(loader=file_loader)
 
-    datas = take_db_items(query='cpu', filters=None)
+    datas = take_db_items(query=category.lower(), filters=None)
     titles = []
     images = []
     specs = []
@@ -117,8 +117,13 @@ def generate_category_page(category: str) -> None:
 
     common_prefix = os.path.commonprefix(images)
     rel_images = [os.path.relpath(image, common_prefix) for image in images]
+    template = 'category.html'
 
-    rendered = env.get_template('category.html').render(
+    match category.lower():
+        case 'cpu':
+            template = 'cpus.html'
+
+    rendered = env.get_template(template).render(
         header_items=header_items,
         Category=category,
         specs=specs,
@@ -131,4 +136,4 @@ def generate_category_page(category: str) -> None:
     print('Html is rendered')
 
 
-generate_category_page('cpu')
+generate_category_page('CPU')
