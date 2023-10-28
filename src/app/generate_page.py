@@ -2,12 +2,11 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 import os
-from typing import List, Type, Any
-from src.backend.models import cpu_models
 from src.backend.cruds import cpu_crud
 
 
 directory = Path(__file__).parent.parent
+print(directory)
 
 def take_header_items() -> list[dict]:
     header_items = []
@@ -86,15 +85,17 @@ def take_db_items(filters: dict | None, query: str = ''):
 def generate_homepage() -> None:
     header_items = take_header_items()
 
-    file_loader = FileSystemLoader(directory/'templates')
+    file_loader = FileSystemLoader(directory / 'templates')
     env = Environment(loader=file_loader)
 
     rendered = env.get_template('homepage.html').render(
         header_items=header_items)
 
     filename = 'homepage.html'
+    if not os.path.exists(directory / 'pages'):
+        os.makedirs(directory / 'pages')
 
-    with open(directory/'pages'/filename, 'w', encoding='UTF-8') as f:
+    with open(directory / 'pages' / filename, 'w+', encoding='UTF-8') as f:
         f.write(rendered)
 
 
@@ -134,6 +135,3 @@ def generate_category_page(category: str) -> None:
     with open(directory / 'pages' / f'{category.lower()}.html', 'w',  encoding='UTF-8') as f:
         f.write(rendered)
     print('Html is rendered')
-
-
-generate_category_page('CPU')

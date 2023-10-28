@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from decimal import *
 
@@ -56,7 +57,7 @@ class CpuSpecs(CpuSpecsBase):
 class CpuBase(BaseModel):
     brand: str
     model: str
-    images: str
+    images: str | None
 
 
 class CpuCreate(CpuBase):
@@ -65,7 +66,7 @@ class CpuCreate(CpuBase):
 
 class Cpu(CpuBase):
     uuid: int
-    specs: CpuSpecs
+    specs: Optional[CpuSpecs]
 
     class Config:
         orm_mode = True

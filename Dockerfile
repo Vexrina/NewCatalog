@@ -1,9 +1,12 @@
 FROM python:3.11
 
-WORKDIR /src
+ENV PYTHONPATH="${PYTHONPATH}:/project"
 
-COPY . /src
+WORKDIR /project
 
-RUN pip install --no-chache-dir -r requirements.txt
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
 
-CMD ["python", "./app/main.py"]
+COPY ./src/ src/
+
+ENTRYPOINT ["python", "src/app/main.py"]
