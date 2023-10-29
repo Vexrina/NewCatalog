@@ -1,0 +1,24 @@
+/* ButtonToggleTheme.module.css */
+
+.toggleButton {
+    background: linear-gradient(to right, var(--background-start-color), var(--background-end-color));
+    /* Другие стили кнопки */
+    /* ... */
+  }
+  
+  /* Правила анимации */
+  .toggleButton.active {
+    animation: toggleBackground var(--transition-duration) ease-in-out;
+  }
+  
+  /* Анимация */
+  @keyframes toggleBackground {
+    from {
+      --background-start-color: #ffffff; /* Начальный цвет (белый) */
+      --background-end-color: #000000; /* Конечный цвет (черный) */
+    }
+    to {
+      --background-start-color: #000000; /* Начальный цвет (черный) */
+      --background-end-color: #ffffff; /* Конечный цвет (белый) */
+    }
+  }

@@ -1,0 +1,20 @@
+/* src/styles/globals.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+body[data-theme="light"] {
+  --color-text-primary: #27201a;
+  --color-text-secondary: #076963;
+  --color-bg-primary: #fff;
+  --color-bg-toggle: #1e90ff;
+}
+
+body[data-theme="dark"] {
+  --color-text-primary: #e3e3e3;
+  --color-text-secondary: #ff6b00;
+  --color-bg-primary: #15232d;
+  --color-bg-toggle: #a9a9a9;
+}
