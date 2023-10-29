@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
-const ButtonToggleTheme = () => {
+const ButtonToggleTheme: React.FC = () => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (

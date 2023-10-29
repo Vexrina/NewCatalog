@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <ThemeProvider>
       <div>
-        <Header />
+        <Header/>
         <h1> Home Page Content</h1>
         <Botter/>
       </div>
