@@ -18,3 +18,18 @@ body[data-theme="dark"] {
   --color-bg-primary: #15232d;
   --color-bg-toggle: #a9a9a9;
 }
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 5px 2vw; /* Отступ с обеих сторон */
+}
+
+.cards-container::before {
+  grid-column: 1; /* Начало на первой колонке */
+}
+
+.cards-container::after {
+  grid-column: -1; /* Завершение на последней колонке */
+}

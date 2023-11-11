@@ -5,7 +5,7 @@ import github from '../public/svg/github.svg';
 
 const Botter: React.FC = () => {
     return (
-        <header className='fixed bottom-0 w-full p-4 bg-gray-200'>
+        <header className='fixed bottom-0 w-full h-12 p-4'>
             <nav className='flex justify-between items-center'>
                 <a href="https://github.com/Vexrina/NewCatalog" className='pr-2'><Image src={github} alt="Source code" height={24} /></a>
                 {/* <ButtonToggleTheme height={12}/> */}
