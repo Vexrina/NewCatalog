@@ -1,12 +1,27 @@
 from typing import Any
 
 from fastapi import FastAPI, Request, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from src.backend.database import SessionLocal
 from src.backend.cruds import cpu_crud
 
 app = FastAPI()
+
+# Настройка CORS
+origins = [
+    "http://localhost:3000",  # Разрешенный источник запросов (адрес вашего React-приложения)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешаем все HTTP-методы (GET, POST, PUT, DELETE и т. д.)
+    allow_headers=["*"],  # Разрешаем все заголовки в запросах
+)
+
 
 NOT_PARSED = {'request': "ERROR: Not parsed"}
 

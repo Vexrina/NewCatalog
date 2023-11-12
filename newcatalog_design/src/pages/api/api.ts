@@ -10,7 +10,7 @@ export interface ApiResponse {
 
 export async function fetchData<T>(route: string): Promise<T | null> {
     try {
-        const response = await fetch(`http://localhost:55002/${route}`);
+        const response = await fetch(`http://localhost:55000/${route}`);
         const data: T = await response.json();
         return data;
     } catch (error) {
@@ -23,7 +23,7 @@ export async function fetchModelData<T>(category: string, model: string): Promis
     const route = `${category}/${model}`;
 
     try {
-        const response = await fetch(`http://localhost:55002/${route}`);
+        const response = await fetch(`http://localhost:55000/${route}`);
         const data: T = await response.json();
         return data;
     } catch (error) {
