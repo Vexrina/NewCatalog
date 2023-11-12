@@ -31,20 +31,52 @@ const Header: React.FC = () => {
             placeholder='Search here!'
             className='px-2 py-2 border rounded focus:outline-none focus:border-blue-500 w-80 h-10'
           />
-          <div className='flex items-center space-x-4 pr-24 pl-4'>
+          <div className='flex items-center space-x-4 pr-24 pl-4 h-24'>
             <Link href="/cpu">
-              <div className={`pr-2 ${router.pathname === '/cpu' ? 'text-red-500' : ''}`}>
+              <div className={`pr-2 ${router.pathname === '/cpu' ? 'text-red-500' : ''} view`}>
                 <Image src={CpuImage} alt="CPU" />
               </div>
             </Link>
-            <a href="/gpu" className='pr-2'><Image src={GpuImage} alt="GPU" /></a>
-            <a href="/ram" className='pr-2'><Image src={RamImage} alt="RAM" /></a>
-            <a href="/motherboard" className='pr-2'><Image src={MotherboardImage} alt="Motherboard" /></a>
-            <a href="/storage" className='pr-2'><Image src={StorageImage} alt="Storage" /></a>
-            <a href="/powerunit" className='pr-2'><Image src={PowerUnitImage} alt="Power Unit" /></a>
-            <a href="/cpufan" className='pr-2'><Image src={CpuFanImage} alt="CPU Fan" /></a>
-            <a href="/shopping_cart" className='pr-2'><Image src={ShopImage} alt="Shopping Cart" /></a>
-            <a href="/profile" className='pr-2'><Image src={ProfileImage} alt="Profile" /></a>
+            <Link href="/gpu">
+              <div className={`pr-2 ${router.pathname === '/gpu' ? 'text-red-500' : ''}`}>
+                <Image src={GpuImage} alt="GPU" />
+              </div>
+            </Link>
+            <Link href="/ram">
+              <div className={`pr-2 ${router.pathname === '/ram' ? 'text-red-500' : ''}`}>
+                <Image src={RamImage} alt="RAM" />
+              </div>
+            </Link>
+            <Link href="/motherboard">
+              <div className={`pr-2 ${router.pathname === '/motherboard' ? 'text-red-500' : ''}`}>
+                <Image src={MotherboardImage} alt="motherboard" />
+              </div>
+            </Link>
+            <Link href="/storage">
+              <div className={`pr-2 ${router.pathname === '/storage' ? 'text-red-500' : ''}`}>
+                <Image src={StorageImage} alt="Storage" />
+              </div>
+            </Link>
+            <Link href="/powerunit">
+              <div className={`pr-2 ${router.pathname === '/powerunit' ? 'text-red-500' : ''}`}>
+                <Image src={PowerUnitImage} alt="Power Unit" />
+              </div>
+            </Link>
+            <Link href="/cpufan">
+              <div className={`pr-2 ${router.pathname === '/cpufan' ? 'text-red-500' : ''}`}>
+                <Image src={CpuFanImage} alt="CPU Fan" />
+              </div>
+            </Link>
+            <Link href="/shopping_cart">
+              <div className={`pr-2 ${router.pathname === '/shopping_cart' ? 'text-red-500' : ''}`}>
+                <Image src={ShopImage} alt="Shopping Cart" />
+              </div>
+            </Link>
+            <Link href="/storprofileage">
+              <div className={`pr-2 ${router.pathname === '/profile' ? 'text-red-500' : ''}`}>
+                <Image src={ProfileImage} alt="Profile" />
+              </div>
+            </Link>
           </div>
         </div>
       </nav>

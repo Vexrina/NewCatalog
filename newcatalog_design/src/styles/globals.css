@@ -23,7 +23,7 @@ body[data-theme="dark"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  padding: 5px 2vw; /* Отступ с обеих сторон */
+  padding: 24px 5vw 24px 5vw; /* Отступ с обеих сторон */
 }
 
 .cards-container::before {
@@ -32,4 +32,52 @@ body[data-theme="dark"] {
 
 .cards-container::after {
   grid-column: -1; /* Завершение на последней колонке */
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column; /* Используем вертикальное направление */
+  align-items: center; /* Выравниваем по центру */
+}
+
+.title {
+  padding: 2vw 0 0 0;
+  margin-bottom: 10px;
+  font-size: 2em;
+  text-align: center; /* Выравниваем текст по центру */
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap; /* Разрешаем перенос на новую строку, если блоки не умещаются в ширину */
+  justify-content: center; /* Центрируем элементы по горизонтали */
+  align-items: flex-start;
+}
+
+.product-image {
+  width: 200px; /* Замените на желаемую ширину */
+  height: 200px; /* Замените на желаемую высоту */
+  object-fit: cover; /* Сохраняет соотношение сторон и обрезает изображение, чтобы оно полностью заполняло блок */
+}
+
+.product-specs {
+  max-width: 45%;
+  padding: 0 2vw 0 2vw;
+}
+
+.product-specs h2 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.product-specs ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-specs li {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  white-space: nowrap;
 }
