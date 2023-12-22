@@ -9,4 +9,6 @@ RUN pip install -r requirements.txt
 
 COPY ./src/ src/
 
+EXPOSE 8081/tcp
+
 ENTRYPOINT ["python", "src/app/main.py"]

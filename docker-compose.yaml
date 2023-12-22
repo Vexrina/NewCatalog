@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: my_db
+    ports:
+      - "8353:5432"
+    restart: unless-stopped
+
+  my-service:
+    build: ./
+    ports:
+      - "127.0.0.1:8090:5000"
+    environment:
+      DB_URL: "postgresql://postgres:postgres@localhost:8353/my_db"
